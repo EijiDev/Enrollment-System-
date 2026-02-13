@@ -3,7 +3,6 @@ import { compare } from "bcryptjs";
 import { generateToken } from "../utils/jwt.js";
 import { isValidEmail, isStrongPassword } from "../utils/validation.js";
 
-
 export const loginService = async (email, password) => {
     if(!email || !password) {
         throw new Error("All fields are required");
@@ -35,8 +34,8 @@ export const loginService = async (email, password) => {
     };
 };
 
-export const registerService = async (name, email, password) => {
-    if(!name || !email || !password) {
+export const registerService = async (username, email, password, role) => {
+    if(!username || !email || !password) {
         throw new Error("All fields are required");
     }
 
@@ -44,12 +43,14 @@ export const registerService = async (name, email, password) => {
         throw new Error("Weak ass password bitch");
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ username, email, password, role });
     return {
         user: {
             id: user.user_id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role
         }
     }
 }
+

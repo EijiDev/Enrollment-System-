@@ -1,4 +1,5 @@
 import { loginService, registerService } from "../service/auth.service.js";
+import { SEVEN_DAYS, COOKIE_OPTIONS } from "../utils/constants.js";
 
 export const login = async (req, res) => {
   try {
@@ -7,16 +8,15 @@ export const login = async (req, res) => {
     const result = await loginService(email, password);
 
     res.cookie("token", result.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, //7days in milliseconds
-    });
+      ...COOKIE_OPTIONS,
+      maxAge: SEVEN_DAYS
+    })
 
     res.status(200).json({
       message: "Login Successful",
       user: result.user,
     });
+    
   } catch (error) {
     if (error.message === "All fields are required") {
       return res.status(400).json({ message: error.message });
@@ -30,9 +30,9 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
-    const result = await registerService(name, email, password);
+    const result = await registerService(username, email, password, role);
     res.status(201).json({
       message: "Sucessfully Created",
       user: result.user,
@@ -49,9 +49,7 @@ export const register = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict"
+      ...COOKIE_OPTIONS
     });
 
     res.status(200).json({
