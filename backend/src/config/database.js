@@ -11,4 +11,13 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD
 });
 
+ool.on('connect', () => {
+    console.log('Database connected successfully');
+});
+
+pool.on('error', (err) => {
+    console.error('Unexpected database error:', err);
+    process.exit(-1);
+});
+
 export default pool;
