@@ -38,7 +38,7 @@ export const registerStudent = async (req, res) => {
     const result = await registerStudentService(req.body);
 
     res.status(201).json({
-      message: 'Student registration successful',
+      message: 'Student registration complete',
       data: result,
     });
   } catch (error) {
@@ -54,32 +54,31 @@ export const registerStudent = async (req, res) => {
       return res.status(400).json({ message: error.message });
     }
 
-    console.error('Register Student Error:', error);
-    res.status(500).json({ message: 'Registration failed' });
+    console.log("Student Registration Error", error);
+    res.status(500).json({ message: "Registration failed" });
   }
 };
 
 export const logout = async (req, res) => {
-    try {
-        res.clearCookie("token", COOKIE_CONFIG);
+  try {
+    res.clearCookie('token', COOKIE_CONFIG);
 
-        res.status(200).json({
-            message: "Logout successful"
-        });
-    } catch (error) {
-        console.error("Logout error:", error);
-        res.status(500).json({ message: "Logout failed" });
-    }
+    res.status(200).json({
+      message: 'Logout successful',
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({ message: 'Logout failed' });
+  }
 };
 
 export const getCurrentUser = async (req, res) => {
-    try {
-        // User info is attached by auth middleware
-        res.status(200).json({
-            user: req.user
-        });
-    } catch (error) {
-        console.error("Get current user error:", error);
-        res.status(500).json({ message: "Failed to get user info" });
-    }
+  try {
+    res.status(200).json({
+      user: req.user,
+    });
+  } catch (error) {
+    console.error('Get current user error:', error);
+    res.status(500).json({ message: 'Failed to get user info' });
+  }
 };
