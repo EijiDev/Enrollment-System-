@@ -1,7 +1,7 @@
 import {
   loginService,
   registerStudentService,
-} from '../services/auth.service.js';
+} from '../service/auth.service.js';
 import { TIME, COOKIE_CONFIG } from '../utils/constants.js';
 
 export const login = async (req, res) => {

@@ -15,7 +15,7 @@ app.get("/api/health", (req, res) => {
     res.json({ status:"Server is running", timestamp: new Date()});
 })
 
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ message: "Route not found"});

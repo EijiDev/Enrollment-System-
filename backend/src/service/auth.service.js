@@ -1,8 +1,8 @@
 import User from '../model/user.model.js';
+import Student from '../model/student.model.js';
 import { compare } from 'bcryptjs';
 import { generateToken } from '../utils/jwt.js';
 import { isValidEmail, isStrongPassword, isValidLRN } from '../utils/validation.js';
-import Student from '../model/student.model.js';
 import { USER_ROLES } from '../utils/constants.js';
 
 export const loginService = async (email, password) => {

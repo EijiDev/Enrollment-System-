@@ -11,7 +11,7 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD
 });
 
-ool.on('connect', () => {
+pool.on('connect', () => {
     console.log('Database connected successfully');
 });
 
