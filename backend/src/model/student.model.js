@@ -1,9 +1,20 @@
-import db from "../config/database.js";
+import db from '../config/database.js';
 
-const Student = {
-    async create() {
-        const students = await db.query("")
-    }
-}
+const User = {
+  async getAllStudents({
+    user_id,
+    lrn,
+    grade_level,
+    strand,
+    track,
+    enrollment_status,
+    school_year,
+    semester,
+    guardian_name,
+    guardian_contact,
+  }) {
+    const results = await db.query('');
+  },
+};
 
-export default Student;
+export default User;
