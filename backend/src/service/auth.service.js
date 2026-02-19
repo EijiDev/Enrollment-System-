@@ -1,8 +1,12 @@
-import User from '../model/user.model.js';
-import Student from '../model/student.model.js';
+import User from '../models/user.model.js';
+import Student from '../models/student.model.js';
 import { compare } from 'bcryptjs';
 import { generateToken } from '../utils/jwt.js';
-import { isValidEmail, isStrongPassword, isValidLRN } from '../utils/validation.js';
+import {
+  isValidEmail,
+  isStrongPassword,
+  isValidLRN,
+} from '../utils/validation.js';
 import { USER_ROLES } from '../utils/constants.js';
 
 export const loginService = async (email, password) => {
@@ -51,65 +55,77 @@ export const registerStudentService = async ({
   date_of_birth,
   gender,
   guardian_name,
-  guardian_contact
+  guardian_contact,
 }) => {
-    if(!name || !email || !password || !lrn || !grade_level || !strand || track) {
-        throw new Error("All fields are required");
-    }
+  if (
+    !name ||
+    !email ||
+    !password ||
+    !lrn ||
+    !grade_level ||
+    !strand ||
+    !track
+  ) {
+    throw new Error('All fields are required');
+  }
 
-    if(!isValidEmail(email)) {
-        throw new Error("Invalid email format")
-    }
+  if (!isValidEmail(email)) {
+    throw new Error('Invalid email format');
+  }
 
-    if(!isStrongPassword(password)) {
-        throw new Error("Password must be at least 8 characters with uppercase, lowercase, and number");
-    }
+  if (!isStrongPassword(password)) {
+    throw new Error(
+      'Password must be at least 8 characters with uppercase, lowercase, and number'
+    );
+  }
 
-    if(!isValidLRN(lrn)) {
-        throw new Error("LRN must be exaclty 12 digits");
-    }
+  if (!isValidLRN(lrn)) {
+    throw new Error(
+      'Invalid LRN format. Must be exactly 12 digits and cannot be a repeated or sequential number'
+    );
+  }
 
-    const existingStudent = await Student.findByLrn(lrn);
-    if(existingStudent) {
-        throw new Error("LRN already registered")
-    }
+  const existingStudent = await Student.findByLrn(lrn);
+  if (existingStudent) {
+    throw new Error('LRN already registered');
+  }
 
-    const user = await User.create({
-        name,
-        email,
-        password,
-        role: USER_ROLES.STUDENT,
-        contact_number,
-        address,
-        date_of_birth,
-        gender
-    });
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role: USER_ROLES.STUDENT,
+    contact_number,
+    address,
+    date_of_birth,
+    gender,
+  });
 
-    const student = await Student.create({
-        userId: user.user_id,
-        lrn,
-        grade_level,
-        strand,
-        track,
-        school_year,
-        semester,
-        guardian_name,
-        guardian_contact
-    });
+  const student = await Student.create({
+    user_id: user.user_id,
+    lrn,
+    grade_level,
+    strand,
+    track,
+    school_year,
+    semester,
+    guardian_name,
+    guardian_contact,
+  });
 
-    return {
-        user: {
-            id: user.user_id,
-            name: user.name,
-            email: user.user_email,
-            role: user.role
-        },
+  return {
+    user: {
+      id: user.user_id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
 
-        student: {
-            studentId: student.student_id,
-            lrn: student.lrn,
-            grade_level: student.grade_level,
-            strand: student.strand
-        }
-    }
+    student: {
+      studentId: student.student_id,
+      lrn: student.lrn,
+      grade_level: student.grade_level,
+      strand: student.strand,
+    },
+  };
 };

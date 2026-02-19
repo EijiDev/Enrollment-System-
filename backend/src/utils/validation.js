@@ -17,9 +17,16 @@ export const isValidNumber = async (contact_number) => {
 };
 
 export const isValidLRN = (lrn) => {
-  if (!lrn) return false;
-  const lrnStr = String(lrn);
   const lrnRegex = /^\d{12}$/;
   
-  return lrnRegex.test(lrnStr);
+  if (!lrnRegex.test(lrn)) return false;
+  
+  if (/^(\d)\1{11}$/.test(lrn)) return false;
+
+  const sequential = '0123456789012345678901234567890';
+  if (sequential.includes(lrn)) return false;
+
+  if (lrn.startsWith('0')) return false;
+
+  return true;
 };

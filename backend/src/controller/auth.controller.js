@@ -49,13 +49,14 @@ export const registerStudent = async (req, res) => {
     if (
       error.message.includes('required') ||
       error.message.includes('Invalid') ||
-      error.message.includes('must be')
+      error.message.includes('must be') ||
+      error.message.includes('Cannot')
     ) {
       return res.status(400).json({ message: error.message });
     }
 
-    console.log("Student Registration Error", error);
-    res.status(500).json({ message: "Registration failed" });
+    console.log('Student Registration Error', error);
+    res.status(500).json({ message: 'Registration failed' });
   }
 };
 

@@ -1,8 +1,8 @@
 import { verifyToken } from '../utils/jwt.js';
-import User from '../model/user.model.js';
+import User from '../models/user.model.js';
 import { USER_ROLES } from '../utils/constants.js';
 
-export const verifyAuth = async (req, res) => {
+export const verifyAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
 
@@ -36,13 +36,13 @@ export const verifyAuth = async (req, res) => {
 
 export const isAdmin = async (req, res, next) => {
     if(req.user.role !== USER_ROLES.ADMIN) {
-        return res.satus(403).json({ message: "Access denied. Admin Only"});
+        return res.status(403).json({ message: "Access denied. Admin Only"});
     }
     next();
 }
 
 export const isTeacher = async (req, res, next) => {
-    if(req.user.role !== USER_ROLES.TEACHER && USER_ROLES.ADMIN) {
+    if(req.user.role !== USER_ROLES.TEACHER && req.user.role !== USER_ROLES.ADMIN) {
         return res.status(403).json({ message: "Acess denied. Teacher Only"})
     }
     next();

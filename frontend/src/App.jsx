@@ -1,17 +1,30 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoginForm from './pages/LoginForm';
+
 function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-red-600 mb-4">
-          Hello React + Vite + Tailwind!
-        </h1>
-        <p className="text-gray-600">
-          Your setup is complete and working! 🚀
-        </p>
-      </div>
-    </div>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<LoginForm />} />
+                
+                {/* Dashboard routes (to be implemented) */}
+                <Route path="/admin/dashboard" element={<div style={dashboardStyle}>Admin Dashboard - Coming Soon!</div>} />
+                <Route path="/teacher/dashboard" element={<div style={dashboardStyle}>Teacher Dashboard - Coming Soon!</div>} />
+                <Route path="/student/dashboard" element={<div style={dashboardStyle}>Student Dashboard - Coming Soon!</div>} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
-export default App
+const dashboardStyle = {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '24px',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: 'white'
+};
 
+export default App;
